@@ -242,13 +242,11 @@ Through this project, I gained practical experience with:
 
 ## 👨‍💻 Author
 
-### Mohit Manilal Patel
+### Yash Patil
 
 **B.Tech – Artificial Intelligence & Machine Learning**
 R. C. Patel Institute of Technology, Shirpur
 
-**AWS with Python Course Trainee**
-Symbiosis — Sponsored by Capgemini
 
 ---
 
@@ -283,10 +281,4 @@ Amazon S3 Output Bucket
 Resized Image
 ```
 
-This project demonstrates practical concepts in **cloud computing, serverless architecture, event-driven processing, cloud storage, IAM security, and automated image processing**.
 
----
-
-## ⭐ Support
-
-If you found this project useful or interesting, consider giving the repository a ⭐ **Star** on GitHub.
