@@ -23,11 +23,11 @@ When a user uploads an image through the web interface, the image is stored in a
 
 ## ☁️ AWS Services Used
 
-| Service        | Purpose                                        |
-| -------------- | ---------------------------------------------- |
-| **Amazon S3**  | Stores uploaded and processed images           |
-| **AWS Lambda** | Processes and resizes images                   |
-| **AWS IAM**    | Manages permissions and secure resource access |
+| AWS Service    | Purpose                                                |
+| -------------- | ------------------------------------------------------ |
+| **Amazon S3**  | Stores uploaded and resized images                     |
+| **AWS Lambda** | Automatically processes and resizes uploaded images    |
+| **AWS IAM**    | Manages permissions and secure access to AWS resources |
 
 ---
 
@@ -68,8 +68,8 @@ When a user uploads an image through the web interface, the image is stored in a
                                │
                                ▼
                   ┌─────────────────────────┐
-                  │     AWS Lambda          │
-                  │   Image Processing      │
+                  │      AWS Lambda         │
+                  │    Image Processing     │
                   └────────────┬────────────┘
                                │
                                ▼
@@ -79,16 +79,50 @@ When a user uploads an image through the web interface, the image is stored in a
                                │
                                ▼
                   ┌─────────────────────────┐
-                  │  Output S3 Bucket       │
-                  │  Resized Image          │
+                  │   Output S3 Bucket      │
+                  │    Resized Image        │
                   └────────────┬────────────┘
                                │
                                ▼
                          ┌──────────────┐
-                         │    Download  │
+                         │   Download   │
                          │    Image     │
                          └──────────────┘
 ```
+
+---
+
+## ⚙️ How It Works
+
+The application follows a serverless image-processing pipeline:
+
+### 1. 🖼️ Upload Image
+
+The user selects an image through the web interface.
+
+### 2. ☁️ Store Image in Amazon S3
+
+The uploaded image is stored in the **Amazon S3 Upload Bucket**.
+
+### 3. 🔔 S3 Event Notification
+
+When a new image is uploaded, Amazon S3 generates an event notification.
+
+### 4. ⚡ Trigger AWS Lambda
+
+The S3 event automatically triggers the **AWS Lambda function**.
+
+### 5. 🐍 Process Image Using Pillow
+
+The Lambda function uses **Python, Boto3, and Pillow** to retrieve the uploaded image and resize it.
+
+### 6. 📦 Store Resized Image
+
+The resized image is saved to the **Amazon S3 Output Bucket**.
+
+### 7. ⬇️ Download Processed Image
+
+The processed image can then be accessed and downloaded from the output location.
 
 ---
 
@@ -111,36 +145,6 @@ serverless-image-resizer/
 
 ---
 
-## ⚙️ How It Works
-
-The application follows a simple serverless image-processing pipeline:
-
-### 1. Upload Image
-
-The user selects an image through the web interface.
-
-### 2. Store Image in S3
-
-The uploaded image is stored in the **Amazon S3 Upload Bucket**.
-
-### 3. Trigger Lambda
-
-Amazon S3 generates an event notification when a new image is uploaded. This event triggers the **AWS Lambda function**.
-
-### 4. Process Image
-
-The Lambda function uses **Pillow** to open and resize the uploaded image.
-
-### 5. Store Resized Image
-
-The processed image is saved to a separate **Amazon S3 Output Bucket**.
-
-### 6. Download Result
-
-The user can download the resized image from the output location.
-
----
-
 ## 🔐 Security
 
 The project follows basic AWS security practices:
@@ -150,40 +154,57 @@ The project follows basic AWS security practices:
 * ☁️ Uses a serverless event-driven architecture
 * ⚡ Lambda executes automatically through S3 events
 * 📦 Images are stored using Amazon S3
+* 🛡️ AWS resources are accessed through controlled IAM permissions
 
 ---
 
-## 📸 Project Screenshots
+# 📸 Project Screenshots
 
-### 🏠 Home Page
+## 🏠 Home Page
 
-<img width="1296" height="663" alt="Home Page" src="https://github.com/user-attachments/assets/557de051-d870-4733-bc8f-493243d38fc4" />
+The web interface allows users to select and upload an image for processing.
 
----
-
-### 📤 Upload Image
-
-<img width="1336" height="702" alt="Upload Image" src="https://github.com/user-attachments/assets/b71baf04-577e-4c51-beee-bd378f86c8f8" />
+<img width="1296" height="663" alt="Serverless Image Resizer Home Page" src="https://github.com/user-attachments/assets/557de051-d870-4733-bc8f-493243d38fc4" />
 
 ---
 
-### 🖼️ Image Processing Output
+## 📤 Upload Image
 
-<img width="1552" height="791" alt="Image Processing Output" src="https://github.com/user-attachments/assets/96c7c965-2166-4e3f-af18-fa7502722975" />
+The selected image is uploaded through the web interface and sent to the Amazon S3 upload bucket.
 
----
-
-### ⚡ AWS Lambda Trigger
-
-<img width="1575" height="767" alt="AWS Lambda Trigger" src="https://github.com/user-attachments/assets/fec2d143-95fc-4b82-87c6-e136d9ffe4b2" />
-
-<img width="1335" height="722" alt="AWS Lambda Configuration" src="https://github.com/user-attachments/assets/bfe1dda1-234d-4b76-8f8f-6521fe30a28c" />
+<img width="1336" height="702" alt="Image Upload Interface" src="https://github.com/user-attachments/assets/b71baf04-577e-4c51-beee-bd378f86c8f8" />
 
 ---
 
-### 📦 Resized Image in Output Bucket
+## 🖼️ Image Processing Output
 
-<img width="1817" height="862" alt="Resized Image in Output Bucket" src="https://github.com/user-attachments/assets/03cefa45-1d95-4acc-9334-646123e0de99" />
+The application displays the processed image after the resizing operation has been completed.
+
+<img width="1552" height="791" alt="Resized Image Processing Output" src="https://github.com/user-attachments/assets/96c7c965-2166-4e3f-af18-fa7502722975" />
+
+---
+
+## ⚡ AWS Lambda Trigger & Execution
+
+An Amazon S3 upload event automatically triggers the AWS Lambda function for image processing.
+
+<img width="1575" height="767" alt="AWS Lambda Trigger and Execution" src="https://github.com/user-attachments/assets/fec2d143-95fc-4b82-87c6-e136d9ffe4b2" />
+
+---
+
+## ⚙️ AWS Lambda Function Configuration
+
+The Lambda function is configured to process uploaded images using Python and the Pillow library.
+
+<img width="1335" height="722" alt="AWS Lambda Function Configuration" src="https://github.com/user-attachments/assets/bfe1dda1-234d-4b76-8f8f-6521fe30a28c" />
+
+---
+
+## 📦 Resized Image in Output Bucket
+
+The processed image is stored in the designated Amazon S3 output bucket after Lambda completes the resizing operation.
+
+<img width="1817" height="862" alt="Resized Image in Amazon S3 Output Bucket" src="https://github.com/user-attachments/assets/03cefa45-1d95-4acc-9334-646123e0de99" />
 
 ---
 
@@ -197,6 +218,25 @@ The project follows basic AWS security practices:
 * 🔐 User authentication
 * 🌐 CloudFront CDN integration
 * 🗄️ Image metadata storage using DynamoDB
+* 📊 Image processing history and analytics
+
+---
+
+## 📚 Key Learning Outcomes
+
+Through this project, I gained practical experience with:
+
+* AWS Lambda
+* Amazon S3
+* Amazon S3 Event Notifications
+* AWS IAM Roles and Permissions
+* Python-based image processing
+* Pillow
+* Boto3
+* Serverless architecture
+* Event-driven architecture
+* Frontend-to-cloud integration
+* Git and GitHub
 
 ---
 
@@ -214,30 +254,39 @@ Symbiosis — Sponsored by Capgemini
 
 ## ⭐ Project Summary
 
-**Serverless Image Resizer** demonstrates how AWS serverless technologies can be combined to build an automated image-processing application.
+**Serverless Image Resizer** is a practical demonstration of serverless image processing using AWS.
 
-The project integrates:
+The application combines **Amazon S3, AWS Lambda, Python, Boto3, and Pillow** to automatically process images without requiring traditional server infrastructure.
 
-**Amazon S3 → S3 Event → AWS Lambda → Pillow → Output S3 Bucket**
+### 🔗 Architecture
 
-It demonstrates practical concepts including **serverless computing, cloud storage, event-driven architecture, automated image processing, IAM security, and scalable AWS application design**.
+```text
+User
+  │
+  ▼
+Web Application
+  │
+  ▼
+Amazon S3 Upload Bucket
+  │
+  │ S3 Event
+  ▼
+AWS Lambda
+  │
+  ▼
+Pillow Image Processing
+  │
+  ▼
+Amazon S3 Output Bucket
+  │
+  ▼
+Resized Image
+```
+
+This project demonstrates practical concepts in **cloud computing, serverless architecture, event-driven processing, cloud storage, IAM security, and automated image processing**.
 
 ---
 
-## 📌 Key Learning Outcomes
+## ⭐ Support
 
-Through this project, I gained practical experience with:
-
-* AWS Lambda functions
-* Amazon S3 buckets and events
-* IAM roles and permissions
-* Python-based image processing
-* Pillow library
-* Boto3
-* Event-driven serverless architecture
-* Frontend-to-cloud integration
-* Git and GitHub project management
-
----
-
-⭐ **If you found this project useful, consider giving it a star!**
+If you found this project useful or interesting, consider giving the repository a ⭐ **Star** on GitHub.
